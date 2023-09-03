@@ -1,7 +1,9 @@
 package com.bank.trading.services;
 
 import com.bank.trading.algorithm.Algo;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SignalHandlerImpl implements SignalHandler {
     @Override
     public void handleSignal(int signal) {
