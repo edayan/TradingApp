@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class SignalHandlerImpl implements SignalHandler {
     @Override
     public void handleSignal(int signal) {
-        Algo algo = new Algo();
+        Algo algo = getAlgoInstance();
         switch (signal) {
             case 1:
                 algo.setUp();
@@ -31,5 +31,9 @@ public class SignalHandlerImpl implements SignalHandler {
                 break;
         }
         algo.doAlgo();
+    }
+
+    protected Algo getAlgoInstance() {
+        return new Algo();
     }
 }
