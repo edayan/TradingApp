@@ -1,0 +1,14 @@
+[
+  {
+    "signalId": 1,
+    "strategyClass": "com.bank.trading.strategies.SignalStrategy1"
+  },
+  {
+    "signalId": 2,
+    "strategyClass": "com.bank.trading.strategies.SignalStrategy2"
+  },
+  {
+    "signalId": 3,
+    "strategyClass": "com.bank.trading.strategies.SignalStrategy3"
+  }
+]
