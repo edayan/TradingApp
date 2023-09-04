@@ -1,6 +1,6 @@
 package com.bank.trading.controllers;
 
-import com.bank.trading.dto.SignalRequest;
+import com.bank.trading.domain.SignalRequest;
 import com.bank.trading.services.SignalHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
