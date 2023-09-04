@@ -66,3 +66,13 @@ then
 end
 ```
 - We need to access `KieSession` and fire rules.
+
+#### The git flow
+- The main branch is called `main`.
+- The branch `develop` keeps on growing.
+- Each feature is created from `develop` branch and named `feature/JIRA-<no>`
+- Once the feature is completed, it is merged to `develop`.
+- Once all the features are completed, creates a `realease/<version>` branch.
+- Regression bugs are fixed to `realease/<version>` and to `develop` separately.
+- Once all regression bugs are fixed, merge `release/<version>` to `main`.
+- Every merge to `main` goes to production.
