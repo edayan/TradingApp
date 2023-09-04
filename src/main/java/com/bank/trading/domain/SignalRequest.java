@@ -1,6 +1,13 @@
-package com.bank.trading.dto;
+package com.bank.trading.domain;
 
 public class SignalRequest {
+    public SignalRequest(int signal) {
+        this.signal = signal;
+    }
+
+    public SignalRequest() {
+    }
+
     private int signal;
 
     public int getSignal() {

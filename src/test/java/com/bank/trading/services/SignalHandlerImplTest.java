@@ -8,75 +8,49 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 
 public class SignalHandlerImplTest {
+
     @Mock
     private Algo mockedAlgo;
 
+    @Mock
+    private StrategyLoader strategyLoader;
+
+    @Mock
+    private SignalStrategy strategy;
+
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testHandleSignalCase1() {
-        SignalHandlerImpl signalHandlerSpy = Mockito.spy(new SignalHandlerImpl());
+    void handleSignal_ValidSignal_ExecutesStrategy() {
+        SignalHandlerImpl signalHandlerSpy = Mockito.spy(new SignalHandlerImpl(strategyLoader));
         Mockito.doReturn(mockedAlgo).when(signalHandlerSpy).getAlgoInstance();
 
-        signalHandlerSpy.handleSignal(1);
+        int signal = 1;
+        Mockito.when(strategyLoader.getStrategy(signal)).thenReturn(strategy);
 
-        verify(mockedAlgo).setUp();
-        verify(mockedAlgo).setAlgoParam(1, 60);
-        verify(mockedAlgo).performCalc();
-        verify(mockedAlgo).submitToMarket();
-        verify(mockedAlgo).doAlgo();
+        signalHandlerSpy.handleSignal(signal);
 
-        verifyNoMoreInteractions(mockedAlgo);
+        verify(strategyLoader).getStrategy(signal);
+        verify(strategy).execute(mockedAlgo);
     }
 
     @Test
-    public void testHandleSignalCase2() {
-        SignalHandlerImpl signalHandlerSpy = Mockito.spy(new SignalHandlerImpl());
+    void handleSignal_InvalidSignal_NoExecution() {
+        SignalHandlerImpl signalHandlerSpy = Mockito.spy(new SignalHandlerImpl(strategyLoader));
         Mockito.doReturn(mockedAlgo).when(signalHandlerSpy).getAlgoInstance();
+        int signal = 999; // Assuming this is an invalid signal
+        Mockito.when(strategyLoader.getStrategy(signal)).thenReturn(null);
 
-        signalHandlerSpy.handleSignal(2);
+        signalHandlerSpy.handleSignal(signal);
 
-        verify(mockedAlgo).reverse();
-        verify(mockedAlgo).setAlgoParam(1, 80);
-        verify(mockedAlgo).submitToMarket();
-        verify(mockedAlgo).doAlgo();
-
-        verifyNoMoreInteractions(mockedAlgo);
-    }
-
-    @Test
-    public void testHandleSignalCase3() {
-        SignalHandlerImpl signalHandlerSpy = Mockito.spy(new SignalHandlerImpl());
-        Mockito.doReturn(mockedAlgo).when(signalHandlerSpy).getAlgoInstance();
-
-        signalHandlerSpy.handleSignal(3);
-
-        verify(mockedAlgo).setAlgoParam(1, 90);
-        verify(mockedAlgo).setAlgoParam(2, 15);
-        verify(mockedAlgo).performCalc();
-        verify(mockedAlgo).submitToMarket();
-        verify(mockedAlgo).doAlgo();
-
-        verifyNoMoreInteractions(mockedAlgo);
-    }
-
-    @Test
-    public void testHandleSignalDefault() {
-        SignalHandlerImpl signalHandlerSpy = Mockito.spy(new SignalHandlerImpl());
-        Mockito.doReturn(mockedAlgo).when(signalHandlerSpy).getAlgoInstance();
-
-        signalHandlerSpy.handleSignal(999); // Any non-matching signal
-
-        verify(mockedAlgo).cancelTrades();
-        verify(mockedAlgo).doAlgo();
-
-        verifyNoMoreInteractions(mockedAlgo);
+        verify(strategyLoader).getStrategy(signal);
+        // Verify that no strategy execution occurred
+        Mockito.verifyNoInteractions(strategy);
     }
 }

@@ -1,6 +1,6 @@
 package com.bank.trading.controllers;
 
-import com.bank.trading.dto.SignalRequest;
+import com.bank.trading.domain.SignalRequest;
 import com.bank.trading.services.SignalHandler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
